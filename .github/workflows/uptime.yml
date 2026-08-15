@@ -44,6 +44,12 @@ jobs:
       - name: Run checks
         run: node uptime/lib/check.mjs
 
+      # سایتی که تازه از پنل اضافه شده هنوز آیکون ندارد؛ همین‌جا گرفته می‌شود
+      # تا کارتش از همان اجرای اول کامل باشد. اگر همه آیکون داشته باشند،
+      # بی‌درنگ رد می‌شود.
+      - name: Fetch icons for new sites
+        run: node uptime/lib/icons.mjs --missing
+
       - name: Build the payload and push it to the panel
         run: node uptime/lib/payload.mjs
 

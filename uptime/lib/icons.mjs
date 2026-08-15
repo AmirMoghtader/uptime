@@ -151,10 +151,28 @@ function guessType(url, buf) {
   return null;
 }
 
-const sites = readSites();
+const all = readSites();
 const previous = readIcons();
 const icons = {};
 const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+
+// با --missing فقط سایت‌هایی که هنوز آیکون ندارند گرفته می‌شوند.
+//
+// این حالت هر ده دقیقه کنار بررسی‌ها اجرا می‌شود تا سایتی که تازه از پنل
+// اضافه شده، همان اجرا آیکونش را بگیرد و کارتش خالی نماند. تازه‌سازی کاملِ
+// همه‌ی آیکون‌ها همچنان هفته‌ای یک بار است.
+const onlyMissing = process.argv.includes('--missing');
+const sites = onlyMissing ? all.filter((s) => !previous[s.id]) : all;
+
+// آیکون‌های موجود باید حفظ شوند، وگرنه فایل با هر اجرای --missing خالی می‌شود.
+if (onlyMissing) {
+  for (const [id, icon] of Object.entries(previous)) icons[id] = icon;
+  if (!sites.length) {
+    console.log('Every site already has an icon — nothing to fetch.');
+    process.exit(0);
+  }
+  console.log(`${sites.length} site(s) without an icon.`);
+}
 
 for (const site of sites) {
   console.log(`${site.id}: ${site.url}`);
@@ -167,10 +185,15 @@ for (const site of sites) {
     icons[site.id] = previous[site.id];
     console.log('  ! could not fetch; kept the previous icon');
   } else {
+    // «آیکون ندارد» هم یک نتیجه است و ثبت می‌شود، وگرنه حالت --missing هر ده
+    // دقیقه سراغ سایتی می‌رفت که اصلاً فاوآیکونی ندارد. تازه‌سازی هفتگی
+    // دوباره امتحانش می‌کند، چون ممکن است بعداً آیکون بگذارند.
+    icons[site.id] = { none: true, fetchedAt: now };
     console.log('  ! no icon found — the dashboard shows the first letter of the name');
   }
 }
 
 writeFileSync(ICONS_FILE, JSON.stringify({ generatedAt: now, icons }, null, 1) + '\n');
-console.log(`Wrote uptime/icons.json (${Object.keys(icons).length} icons)`);
+const withIcon = Object.values(icons).filter((i) => i?.dataUri).length;
+console.log(`Wrote uptime/icons.json (${withIcon} icons, ${Object.keys(icons).length - withIcon} without one)`);
 if (!existsSync(ICONS_FILE)) process.exit(1);

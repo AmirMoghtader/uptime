@@ -10,6 +10,34 @@ import {
 
 const UA = 'OnwebsUptimeBot/1.0 (+https://github.com/onwebs/uptime)';
 
+// یک بررسیِ ناموفق بلافاصله «قطعی» ثبت نمی‌شود.
+//
+// بیشتر این سایت‌ها روی میزبان‌های ایران‌اند و بررسی‌ها از runnerهای گیت‌هاب در
+// خارج انجام می‌شود؛ مسیر بین‌المللی به ایران گاهی برای چند ثانیه می‌افتد و
+// همان یک تایم‌اوت، یک قطعیِ کاذب در تاریخچه می‌سازد. پس فقط وقتی پاسخی
+// نیامده باشد (s=0 یعنی تایم‌اوت/خطای اتصال) دوباره امتحان می‌کنیم.
+//
+// کدهای واقعیِ سرور — ۴۰۳، ۵۰۰ و مانند آن‌ها — تکرار نمی‌شوند: آن‌ها پاسخِ خودِ
+// سایت‌اند، نه خرابیِ مسیر.
+const RETRIES = 2;
+const RETRY_WAIT_MS = 4000;
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function checkConfirmed(site) {
+  let result = await check(site);
+  for (let i = 0; i < RETRIES && result.s === 0; i++) {
+    await sleep(RETRY_WAIT_MS);
+    const again = await check(site);
+    if (again.s !== 0) {
+      console.log(`${site.id.padEnd(14)} recovered on attempt ${i + 2}`);
+      return again;
+    }
+    result = again;
+  }
+  return result;
+}
+
 async function check(site) {
   const started = performance.now();
   const controller = new AbortController();
@@ -82,7 +110,7 @@ for (const s of all.filter((x) => !isMonitored(x))) {
 const t = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'); // ISO-8601 با دقت ثانیه
 
 const results = await Promise.all(
-  sites.map(async (site) => ({ id: site.id, site, result: { t, ...(await check(site)) } })),
+  sites.map(async (site) => ({ id: site.id, site, result: { t, ...(await checkConfirmed(site)) } })),
 );
 
 for (const { site, result } of results) {

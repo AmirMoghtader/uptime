@@ -135,28 +135,43 @@ if (!endpoint || !token) {
   process.exit(0);
 }
 
-const controller = new AbortController();
-const timer = setTimeout(() => controller.abort(), 30_000);
-try {
-  const res = await fetch(endpoint, {
-    method: 'POST',
-    signal: controller.signal,
-    headers: {
-      'content-type': 'application/json',
-      authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(payload),
-  });
-  const text = (await res.text()).slice(0, 300);
-  if (!res.ok) {
-    // سایت پنل ممکن است لحظه‌ای در دسترس نباشد؛ این نباید کل اجرا را قرمز کند،
-    // چون داده در ریپو ثبت شده و ارسال بعدی همه‌چیز را می‌رساند.
-    console.log(`Push failed: HTTP ${res.status} — ${text}`);
-    process.exit(0);
+// مسیر بین‌المللی به میزبان‌های ایران گاهی چند ثانیه می‌افتد؛ یک بار تلاش کافی
+// نیست، وگرنه پنل تا ده دقیقهٔ بعد دادهٔ قدیمی نشان می‌دهد.
+const ATTEMPTS = 3;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+for (let attempt = 1; attempt <= ATTEMPTS; attempt++) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 30_000);
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      signal: controller.signal,
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+    if (res.ok) {
+      console.log(`Pushed to ${new URL(endpoint).host} — HTTP ${res.status}${attempt > 1 ? ` (attempt ${attempt})` : ''}`);
+      break;
+    }
+    const text = (await res.text()).slice(0, 200);
+    console.log(`Attempt ${attempt}: HTTP ${res.status} — ${text}`);
+    // ۴۰۱/۴۰۴ یعنی توکن یا مسیر غلط است؛ تکرارش فایده‌ای ندارد.
+    if (res.status === 401 || res.status === 404) break;
+  } catch (err) {
+    console.log(`Attempt ${attempt}: ${err?.message ?? err}`);
+  } finally {
+    clearTimeout(timer);
   }
-  console.log(`Pushed to ${new URL(endpoint).host} — HTTP ${res.status}`);
-} catch (err) {
-  console.log(`Push failed: ${err?.message ?? err} — the data is still committed to the repo.`);
-} finally {
-  clearTimeout(timer);
+
+  if (attempt === ATTEMPTS) {
+    // ارسال نشد، ولی داده در ریپو کامیت می‌شود و ارسال بعدی همه‌چیز را
+    // می‌رساند — پس این نباید کل اجرا را قرمز کند.
+    console.log('Push gave up after 3 attempts — the data is still committed to the repo.');
+  } else {
+    await sleep(5000);
+  }
 }

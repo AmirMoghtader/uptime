@@ -15,7 +15,7 @@
       "name": "Bardaskan",
       "url": "https://app.bardaskan.ir",
       "monitor": false,
-      "note": "Not checked: the server returns HTTP 403 to requests from outside Iran, and GitHub runs these checks from abroad. Any result here would be a false alarm."
+      "note": "از خارج ایران در دسترس نیست (۴۰۳) و بررسی‌ها از بیرون انجام می‌شود، پس هر نتیجه‌ای اینجا هشدار کاذب بود."
     },
     {
       "id": "fanavaransabz",

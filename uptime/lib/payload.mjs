@@ -231,7 +231,18 @@ for (let attempt = 1; attempt <= ATTEMPTS; attempt++) {
       body: JSON.stringify(payload),
     });
     if (res.ok) {
-      console.log(`Pushed to ${new URL(endpoint).host} — HTTP ${res.status}${attempt > 1 ? ` (attempt ${attempt})` : ''}`);
+      // پاسخ می‌گوید چند ردیف تازه در تاریخچه نشسته — بدون این، تنها راهِ
+      // فهمیدنش باز کردن دیتابیس بود.
+      let detail = '';
+      try {
+        const body = await res.json();
+        if (typeof body?.stored === 'number') {
+          detail = ` — ${body.stored} new check rows, ${body.days ?? 0} daily rows`;
+        }
+      } catch { /* پاسخ JSON نبود؛ مهم نیست */ }
+      console.log(
+        `Pushed to ${new URL(endpoint).host} — HTTP ${res.status}${attempt > 1 ? ` (attempt ${attempt})` : ''}${detail}`,
+      );
       break;
     }
     const text = (await res.text()).slice(0, 200);

@@ -20,6 +20,10 @@ jobs:
     # قابل استفاده نیست، ولی env هست.
     env:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      # گزارش پس از نوشته‌شدن، به پنل ادمین هم فرستاده می‌شود تا لازم نباشد
+      # کسی برای خواندنش سراغ ریپو بیاید.
+      UPTIME_ENDPOINT: ${{ vars.UPTIME_ENDPOINT }}
+      UPTIME_TOKEN: ${{ secrets.UPTIME_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 

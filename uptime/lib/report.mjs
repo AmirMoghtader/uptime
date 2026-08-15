@@ -23,22 +23,27 @@ const WEEK_MS = 7 * DAY_MS;
 const NOW = Date.now();
 const TZ = 'Asia/Tehran';
 
-const nf = new Intl.NumberFormat('en-US');
+// گزارش فارسی است، چون جایی که خوانده می‌شود پنل فارسی آنوبز است.
+const nf = new Intl.NumberFormat('fa-IR');
 const n = (v) => nf.format(v);
-const plural = (count, word) => `${n(count)} ${word}${count === 1 ? '' : 's'}`;
-const fmtDate = (ms) => new Intl.DateTimeFormat('en-US', { timeZone: TZ, dateStyle: 'long' }).format(new Date(ms));
+// سال نباید جداکنندهٔ هزارگان بگیرد: «۲٬۰۲۶» غلط است.
+const nPlain = (v) => new Intl.NumberFormat('fa-IR', { useGrouping: false }).format(v);
+const fmtDate = (ms) => new Intl.DateTimeFormat('fa-IR', { timeZone: TZ, dateStyle: 'long' }).format(new Date(ms));
 const tehranHour = (ms) => Number(new Intl.DateTimeFormat('en-US', {
   timeZone: TZ, hour: '2-digit', hour12: false,
 }).format(new Date(ms)));
 
-const pct = (v) => (v === null ? '—' : `${Number(v.toFixed(2))}%`);
-const hour = (h) => `${String(h).padStart(2, '0')}:00`;
+const pct = (v) => (v === null ? '—' : `${n(Number(v.toFixed(2)))}٪`);
+const hour = (h) => `${n(h)}:۰۰`;
 
 function duration(ms) {
   const min = Math.round(ms / 60000);
-  if (min < 60) return plural(min, 'minute');
+  if (min < 1) return 'کمتر از یک دقیقه';
+  if (min < 60) return `${n(min)} دقیقه`;
   const h = Math.floor(min / 60), rest = min % 60;
-  return rest ? `${plural(h, 'hour')} ${plural(rest, 'minute')}` : plural(h, 'hour');
+  if (h < 24) return rest ? `${n(h)} ساعت و ${n(rest)} دقیقه` : `${n(h)} ساعت`;
+  const d = Math.floor(h / 24), hr = h % 24;
+  return hr ? `${n(d)} روز و ${n(hr)} ساعت` : `${n(d)} روز`;
 }
 
 /** شمارهٔ هفتهٔ ISO — کلید نام فایل گزارش. */
@@ -105,16 +110,16 @@ function findings() {
     // ۱. الگوی ساعتی
     const pattern = hourPattern(d.outages);
     if (pattern) {
-      lines.push(`${n(pattern.hits)} of this week's ${n(pattern.total)} outages started between ${hour(pattern.from)} and ${hour(pattern.to)} Tehran time. A repeat in one narrow band usually means something runs on the server at that hour — a cron job, a backup, or log rotation. Look at scheduled jobs, not traffic.`);
+      lines.push(`${n(pattern.hits)} قطعی از ${n(pattern.total)} قطعی این هفته بین ساعت ${hour(pattern.from)} و ${hour(pattern.to)} به وقت تهران شروع شده. تکرار در یک بازهٔ باریک معمولاً یعنی چیزی در همان ساعت روی سرور اجرا می‌شود — کرون‌جاب، بکاپ، یا چرخش لاگ. سراغ کارهای زمان‌بندی‌شده بروید، نه ترافیک.`);
     }
 
     // ۲. روند زمان پاسخ داخل همین هفته
     if (d.avgFirstHalf && d.avgSecondHalf) {
       const change = (d.avgSecondHalf - d.avgFirstHalf) / d.avgFirstHalf;
       if (change >= 0.2) {
-        lines.push(`Response time in the second half of the week was ${Math.round(change * 100)}% higher than the first half (${n(d.avgFirstHalf)} → ${n(d.avgSecondHalf)} ms). The trend is upward; if it continues next week it is worth acting on.`);
+        lines.push(`زمان پاسخ در نیمهٔ دوم هفته ${n(Math.round(change * 100))}٪ بیشتر از نیمهٔ اول بوده (${n(d.avgFirstHalf)} → ${n(d.avgSecondHalf)} میلی‌ثانیه). روند صعودی است؛ اگر هفتهٔ بعد هم ادامه داشت، ارزش رسیدگی دارد.`);
       } else if (change <= -0.2) {
-        lines.push(`Response time in the second half of the week improved by ${Math.abs(Math.round(change * 100))}% (${n(d.avgFirstHalf)} → ${n(d.avgSecondHalf)} ms).`);
+        lines.push(`زمان پاسخ در نیمهٔ دوم هفته ${n(Math.abs(Math.round(change * 100)))}٪ بهتر شده (${n(d.avgFirstHalf)} → ${n(d.avgSecondHalf)} میلی‌ثانیه).`);
       }
     }
 
@@ -123,26 +128,26 @@ function findings() {
       const diff = d.uptime.pct - d.prevUptime.pct;
       if (Math.abs(diff) >= 0.1) {
         lines.push(diff > 0
-          ? `Better than last week: ${pct(d.prevUptime.pct)} → ${pct(d.uptime.pct)}.`
-          : `Worse than last week: ${pct(d.prevUptime.pct)} → ${pct(d.uptime.pct)}.`);
+          ? `نسبت به هفتهٔ قبل بهتر شده: ${pct(d.prevUptime.pct)} ← ${pct(d.uptime.pct)}.`
+          : `نسبت به هفتهٔ قبل بدتر شده: ${pct(d.prevUptime.pct)} ← ${pct(d.uptime.pct)}.`);
       }
     }
     if (d.prevAvg && d.avg) {
       const change = (d.avg - d.prevAvg) / d.prevAvg;
       if (Math.abs(change) >= 0.25) {
-        lines.push(`Average response time is ${Math.abs(Math.round(change * 100))}% ${change > 0 ? 'higher' : 'lower'} than last week (${n(d.prevAvg)} → ${n(d.avg)} ms).`);
+        lines.push(`میانگین زمان پاسخ نسبت به هفتهٔ قبل ${n(Math.abs(Math.round(change * 100)))}٪ ${change > 0 ? 'بیشتر' : 'کمتر'} شده (${n(d.prevAvg)} → ${n(d.avg)} میلی‌ثانیه).`);
       }
     }
 
     // ۴. قطعی طولانی
     const longest = d.outages.slice().sort((a, b) => b.durationMs - a.durationMs)[0];
     if (longest && longest.durationMs >= 30 * 60 * 1000) {
-      lines.push(`The longest outage lasted ${duration(longest.durationMs)}; code ${longest.codes.map((c) => c.code).join(', ')}.`);
+      lines.push(`طولانی‌ترین قطعی ${duration(longest.durationMs)} طول کشید؛ کد ${longest.codes.map((c) => c.code).join('، ')}.`);
     }
 
     // ۵. پوشش ناقص داده
     if (d.uptime.gapMs > 3 * 60 * 60 * 1000) {
-      lines.push(`${duration(d.uptime.gapMs)} of this week has no checks at all and was excluded from the percentage. Scheduled runs were probably missed, so this week's uptime figure rests on thinner evidence than usual.`);
+      lines.push(`${duration(d.uptime.gapMs)} از این هفته هیچ بررسی‌ای ندارد و از محاسبهٔ درصد بیرون گذاشته شده. احتمالاً چند اجرا از دست رفته، پس عدد آپتایم این هفته پشتوانهٔ کمتری از همیشه دارد.`);
     }
 
     if (lines.length) out.push({ name: d.site.name, lines });
@@ -159,8 +164,8 @@ function findings() {
     const median = sorted[Math.floor((sorted.length - 1) / 2)].avg;
     if (slowest.avg >= median * 1.8) {
       out.push({
-        name: 'Across sites',
-        lines: [`${slowest.name} averages ${n(slowest.avg)} ms, noticeably slower than the rest (median ${n(median)} ms). The gap is steady and unrelated to outages — look at the server itself or the network path.`],
+        name: 'بین سایت‌ها',
+        lines: [`میانگین پاسخ ${slowest.name} برابر ${n(slowest.avg)} میلی‌ثانیه است، محسوس‌تر از بقیه (میانهٔ ${n(median)} میلی‌ثانیه). این فاصله پایدار است و ربطی به قطعی ندارد — سراغ خود سرور یا مسیر شبکه بروید.`],
       });
     }
   }
@@ -179,17 +184,17 @@ const notes = findings();
 
 const table = withData.length
   ? [
-      '| Site | Uptime | Checks | Avg response | Outages |',
+      '| سایت | آپتایم | بررسی | میانگین پاسخ | قطعی |',
       '| --- | --- | --- | --- | --- |',
       ...withData.map((d) => `| ${d.site.name} | ${pct(d.uptime.pct)} | ${n(d.checks)} | ${d.avg ? `${n(d.avg)} ms` : '—'} | ${n(d.outages.length)} |`),
     ].join('\n')
-  : '_No data recorded for this week yet._';
+  : '_برای این هفته هنوز داده‌ای ثبت نشده._';
 
 const body = notes.length
   ? notes.map((x) => `### ${x.name}\n\n${x.lines.map((l) => `- ${l}`).join('\n')}`).join('\n\n')
   : totalOutages === 0
-    ? 'A quiet week: no outages recorded and no meaningful change in response times.'
-    : `${plural(totalOutages, 'outage')} were recorded this week, but no reliable pattern stands out — no repeating hour, no shift in response times.`;
+    ? 'هفتهٔ بی‌اتفاقی بود: هیچ قطعی‌ای ثبت نشد و تغییر معناداری در زمان پاسخ دیده نمی‌شود.'
+    : `این هفته ${n(totalOutages)} قطعی ثبت شد، ولی الگوی قابل اتکایی در آن‌ها نیست — نه ساعت تکرارشونده‌ای، نه تغییری در زمان پاسخ.`;
 
 const digest = {
   week: slug,
@@ -216,14 +221,14 @@ const digest = {
   })),
 };
 
-let markdown = `# Weekly uptime report — week ${week}, ${year}
+let markdown = `# گزارش هفتگی آپتایم — هفتهٔ ${n(week)} سال ${nPlain(year)}
 
-${fmtDate(weekStart)} to ${fmtDate(weekEnd)}
+${fmtDate(weekStart)} تا ${fmtDate(weekEnd)}
 
 ${table}
 
-${totalOutages > 0 ? `Total downtime this week: ${duration(totalDownMs)} across ${plural(totalOutages, 'event')}.\n` : ''}
-## What the data shows
+${totalOutages > 0 ? `مجموع زمان قطعی این هفته: ${duration(totalDownMs)} در ${n(totalOutages)} رویداد.\n` : ''}
+## داده چه می‌گوید
 
 ${body}
 `;
@@ -235,6 +240,122 @@ mkdirSync(REPORTS_DIR, { recursive: true });
 writeFileSync(join(REPORTS_DIR, `${slug}.md`), markdown);
 console.log(`Wrote uptime/reports/${slug}.md`);
 if (!existsSync(join(REPORTS_DIR, `${slug}.md`))) process.exit(1);
+
+await push();
+
+/**
+ * همان زیرمجموعه‌ای از Markdown که خودمان تولید می‌کنیم را به HTML تبدیل
+ * می‌کند: سرتیتر، جدول، فهرست، پاراگراف و تأکید.
+ *
+ * عمداً کتابخانه‌ای اضافه نشده — نه اینجا و نه در پنل — چون هاست نمی‌تواند
+ * پکیج تازه نصب کند. پنل خروجی را قبل از نمایش با sanitize-html پاک می‌کند.
+ */
+function toHtml(md) {
+  const esc = (t) => t.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
+  const inline = (t) =>
+    esc(t)
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/(^|\s)_([^_]+)_(?=\s|$|[.،:])/g, '$1<em>$2</em>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  const out = [];
+  const lines = md.split('\n');
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    if (!line.trim()) { i++; continue; }
+
+    const heading = /^(#{1,4})\s+(.*)$/.exec(line);
+    if (heading) {
+      const level = Math.min(6, heading[1].length + 1); // # → h2، تا h1 برای عنوان صفحه بماند
+      out.push(`<h${level}>${inline(heading[2])}</h${level}>`);
+      i++;
+      continue;
+    }
+
+    // جدول: سطر سرستون، سطر جداکننده، بعد بدنه
+    if (line.startsWith('|') && lines[i + 1]?.replace(/[\s|:-]/g, '') === '') {
+      const cells = (row) => row.split('|').slice(1, -1).map((c) => c.trim());
+      const head = cells(line);
+      i += 2;
+      const rows = [];
+      while (i < lines.length && lines[i].startsWith('|')) { rows.push(cells(lines[i])); i++; }
+      out.push(
+        `<table><thead><tr>${head.map((c) => `<th>${inline(c)}</th>`).join('')}</tr></thead>` +
+        `<tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${inline(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`,
+      );
+      continue;
+    }
+
+    if (/^[-*]\s+/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^[-*]\s+/.test(lines[i])) {
+        items.push(`<li>${inline(lines[i].replace(/^[-*]\s+/, ''))}</li>`);
+        i++;
+      }
+      out.push(`<ul>${items.join('')}</ul>`);
+      continue;
+    }
+
+    const para = [];
+    while (i < lines.length && lines[i].trim() && !/^([-*]\s|#|\|)/.test(lines[i])) {
+      para.push(lines[i].trim());
+      i++;
+    }
+    if (para.length) out.push(`<p>${inline(para.join(' '))}</p>`);
+  }
+
+  return out.join('\n');
+}
+
+/** گزارش را به پنل می‌فرستد. نرسیدنش نباید اجرا را قرمز کند — فایل در ریپو هست. */
+async function push() {
+  const endpoint = process.env.UPTIME_ENDPOINT;
+  const token = process.env.UPTIME_TOKEN;
+  if (!endpoint || !token) {
+    console.log('UPTIME_ENDPOINT/UPTIME_TOKEN not set — report written to the repo only.');
+    return;
+  }
+
+  const payload = {
+    kind: 'report',
+    week: slug,
+    from: new Date(weekStart).toISOString(),
+    to: new Date(weekEnd).toISOString(),
+    generatedAt: new Date(NOW).toISOString(),
+    totalOutages,
+    totalDownMs,
+    markdown,
+    html: toHtml(markdown),
+  };
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 30_000);
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        signal: controller.signal,
+        headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        console.log(`Report pushed to ${new URL(endpoint).host} — HTTP ${res.status}`);
+        return;
+      }
+      console.log(`Attempt ${attempt}: HTTP ${res.status}`);
+      if (res.status === 401 || res.status === 404) return;
+    } catch (err) {
+      console.log(`Attempt ${attempt}: ${err?.message ?? err}`);
+    } finally {
+      clearTimeout(timer);
+    }
+    if (attempt < 3) await new Promise((r) => setTimeout(r, 5000));
+  }
+  console.log('Report push gave up — the file is still committed to the repo.');
+}
 
 // ── بازنویسی اختیاری با Claude ─────────────────────────────────────────────
 

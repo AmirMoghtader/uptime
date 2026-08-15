@@ -39,15 +39,17 @@ jobs:
           node-version: "20"
 
       - name: Sync the site list from the panel
+        id: sync
         run: node uptime/lib/sync-sites.mjs
 
       - name: Run checks
         run: node uptime/lib/check.mjs
 
-      # سایتی که تازه از پنل اضافه شده هنوز آیکون ندارد؛ همین‌جا گرفته می‌شود
-      # تا کارتش از همان اجرای اول کامل باشد. اگر همه آیکون داشته باشند،
-      # بی‌درنگ رد می‌شود.
+      # فقط وقتی فهرست عوض شده باشد — یعنی همان لحظه‌ای که سایتی از پنل
+      # اضافه شده. آیکون و لوگو تغییر نمی‌کنند، پس گرفتن دوباره‌شان در هر
+      # اجرا کار بیهوده‌ای است؛ تازه‌سازی کامل ماهی یک بار جدا انجام می‌شود.
       - name: Fetch icons for new sites
+        if: steps.sync.outputs.changed == 'true'
         run: node uptime/lib/icons.mjs --missing
 
       - name: Build the payload and push it to the panel

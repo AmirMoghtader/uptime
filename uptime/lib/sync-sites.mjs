@@ -10,8 +10,20 @@
 // بررسی‌ها با همان فهرست قبلی ادامه پیدا می‌کنند — یک قطعیِ پنل نباید رصد را
 // بخواباند.
 
-import { writeFileSync, readFileSync } from 'node:fs';
+import { writeFileSync, readFileSync, appendFileSync } from 'node:fs';
 import { SITES_FILE } from './common.mjs';
+
+/**
+ * به Workflow می‌گوید فهرست عوض شد یا نه.
+ *
+ * مرحله‌ی گرفتن آیکون به همین وابسته است: آیکون و لوگو عوض نمی‌شوند، پس
+ * فقط وقتی لازم است که سایتی تازه اضافه شده باشد.
+ */
+function report(changed) {
+  if (process.env.GITHUB_OUTPUT) {
+    appendFileSync(process.env.GITHUB_OUTPUT, `changed=${changed ? 'true' : 'false'}\n`);
+  }
+}
 
 // همان مسیر /api/uptime است: GET فهرست می‌دهد و POST بسته را می‌گیرد.
 const endpoint = process.env.UPTIME_SITES_ENDPOINT || process.env.UPTIME_ENDPOINT;
@@ -19,6 +31,7 @@ const token = process.env.UPTIME_TOKEN;
 
 if (!endpoint || !token) {
   console.log('UPTIME_ENDPOINT/UPTIME_TOKEN not set — keeping the committed site list.');
+  report(false);
   process.exit(0);
 }
 
@@ -32,6 +45,7 @@ try {
   });
   if (!res.ok) {
     console.log(`Panel returned HTTP ${res.status} — keeping the committed site list.`);
+    report(false);
     process.exit(0);
   }
 
@@ -39,6 +53,7 @@ try {
   const sites = Array.isArray(body?.sites) ? body.sites : null;
   if (!sites) {
     console.log('Panel response had no site list — keeping the committed one.');
+    report(false);
     process.exit(0);
   }
 
@@ -64,6 +79,7 @@ try {
 
   if (!clean.length) {
     console.log('Panel sent an empty list — keeping the committed one (refusing to wipe every site).');
+    report(false);
     process.exit(0);
   }
 
@@ -71,13 +87,16 @@ try {
   const after = JSON.stringify({ sites: clean }, null, 2) + '\n';
   if (before === after) {
     console.log(`Site list unchanged (${clean.length} sites).`);
+    report(false);
     process.exit(0);
   }
 
   writeFileSync(SITES_FILE, after);
   console.log(`Site list updated from the panel: ${clean.length} sites.`);
+  report(true);
 } catch (err) {
   console.log(`Could not reach the panel (${err?.message ?? err}) — keeping the committed site list.`);
+  report(false);
 } finally {
   clearTimeout(timer);
 }

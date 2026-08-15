@@ -34,6 +34,8 @@ function dayBars(checks) {
     bars.push({
       date: new Date(to).toISOString().slice(0, 10),
       pct: u.coveredMs > 0 ? u.pct : null,
+      // تعداد قطعی‌های همان روز، برای نمایش در tooltip
+      outages: u.coveredMs > 0 ? findOutages(day.filter((c) => c.at >= from), to).length : 0,
     });
   }
   return bars;

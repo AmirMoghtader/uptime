@@ -232,7 +232,14 @@ main {
   transition: transform 0.15s ease, opacity 0.15s ease;
 }
 .strip .bars i:hover { transform: scaleY(1.12); }
-.strip .bars i.part { background: var(--down); }
+/* سهم قرمز از پایین، به اندازهٔ همان کسری از روز که سایت پایین بوده. */
+.strip .bars i.part {
+  background: linear-gradient(
+    to top,
+    var(--down) var(--down-share, 100%),
+    var(--up) var(--down-share, 100%)
+  );
+}
 .strip .bars i.none { background: rgba(19, 53, 102, 0.06); }
 
 .legend {

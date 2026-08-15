@@ -14,6 +14,7 @@ import {
   currentStatus, isUp, isMonitored, WINDOWS, DAY_MS, UPTIME_DIR, MAX_GAP_MS,
   CHECK_EVERY_MIN,
 } from './common.mjs';
+import { findOutages as outagesOf } from './common.mjs';
 
 const NOW = Date.now();
 const SITE_TITLE = 'Service Status';
@@ -75,8 +76,24 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 // ── نوار ۳۰ روز ────────────────────────────────────────────────────────────
 
 /**
- * برای هر روز یک میله. سبز = تمام روز بالا، قرمز = آن روز قطعی داشته،
- * خاکستری کم‌رنگ = آن روز داده‌ای نداریم (نه بالا، نه پایین).
+ * چه کسری از ارتفاع میله قرمز شود.
+ *
+ * نگاشت خطی جواب نمی‌دهد: قطعی‌های واقعی چند درصدِ روزند، پس روزِ یک‌درصدی و
+ * روزِ بیست‌درصدی هر دو یک باریکهٔ نازک می‌شدند. با جذر، تفاوت در همان بازه‌ی
+ * کوچک باز می‌شود — ۱٪ قطعی حدود ۱۰٪ میله، ۲۰٪ قطعی نزدیک نصف، و روزِ کاملاً
+ * پایین تمام میله. کف ۱۵٪ تا کوتاه‌ترین قطعی هم دیده شود.
+ */
+function downShare(pctUp) {
+  const downFraction = Math.min(1, Math.max(0, (100 - pctUp) / 100));
+  return Math.min(100, Math.max(15, Math.round(Math.sqrt(downFraction) * 100)));
+}
+
+/**
+ * برای هر روز یک میله.
+ *
+ * میله دو تکه است: سهم قرمز از پایین، به اندازه‌ی شدتِ قطعیِ همان روز. پس روزی
+ * که پنج دقیقه قطع بوده با روزی که شش ساعت قطع بوده یک شکل ندارند — چیزی که
+ * با قرمزِ یکدست گم می‌شد.
  */
 function dayStrip(checks) {
   const bars = [];
@@ -86,13 +103,22 @@ function dayStrip(checks) {
     const day = checks.filter((c) => c.at >= from - DAY_MS && c.at <= to);
     const u = computeUptime(day, from, to);
 
-    let cls = 'none';
-    let label = 'no data';
-    if (u.coveredMs > 0 && u.pct !== null) {
-      cls = u.pct >= 99.995 ? '' : 'part';
-      label = pct(u.pct);
+    if (!(u.coveredMs > 0) || u.pct === null) {
+      bars.push(`<i class="none" title="${esc(dtDay.format(new Date(to)))} — no data"></i>`);
+      continue;
     }
-    bars.push(`<i class="${cls}" title="${esc(dtDay.format(new Date(to)))} — ${esc(label)}"></i>`);
+
+    const label = `${esc(dtDay.format(new Date(to)))} — ${esc(pct(u.pct))}`;
+    if (u.pct >= 99.995) {
+      bars.push(`<i title="${label}"></i>`);
+      continue;
+    }
+
+    const n = outagesOf(day.filter((c) => c.at >= from), to).length;
+    const share = downShare(u.pct);
+    bars.push(
+      `<i class="part" style="--down-share:${share}%" title="${label} · ${plural(n, 'outage')}"></i>`,
+    );
   }
 
   return `<div class="strip">

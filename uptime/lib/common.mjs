@@ -167,6 +167,7 @@ export function computeUptime(checks, fromMs, toMs) {
   return {
     pct: coveredMs > 0 ? (upMs / coveredMs) * 100 : null,
     coveredMs,
+    upMs,
     gapMs,
     count: checks.length,
     windowMs: toMs - fromMs,

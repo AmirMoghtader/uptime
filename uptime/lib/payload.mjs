@@ -23,19 +23,36 @@ const STRIP_DAYS = 30;
 const sites = readSites();
 const icons = readIcons();
 
-/** درصد آپتایم هر روز، برای نوار ۳۰ روزه. */
+/**
+ * یک ورودی برای هر روز از سی روز گذشته.
+ *
+ * علاوه بر درصد، جزئیات همان روز هم می‌آید تا با کلیک روی یک میله در پنل،
+ * بشود دید آن روز دقیقاً چه گذشته — بدون اینکه پنل لازم باشد چیزی حساب کند.
+ */
 function dayBars(checks) {
   const bars = [];
   for (let i = STRIP_DAYS - 1; i >= 0; i--) {
     const to = Math.min(NOW, NOW - i * DAY_MS);
     const from = to - DAY_MS;
-    const day = checks.filter((c) => c.at >= from - DAY_MS && c.at <= to);
-    const u = computeUptime(day, from, to);
+    const window = checks.filter((c) => c.at >= from - DAY_MS && c.at <= to);
+    const inDay = window.filter((c) => c.at >= from && c.at <= to);
+    const u = computeUptime(window, from, to);
+
+    if (!(u.coveredMs > 0)) {
+      bars.push({ date: new Date(to).toISOString().slice(0, 10), pct: null, checks: 0 });
+      continue;
+    }
+
+    const outages = findOutages(inDay, to);
     bars.push({
       date: new Date(to).toISOString().slice(0, 10),
-      pct: u.coveredMs > 0 ? u.pct : null,
-      // تعداد قطعی‌های همان روز، برای نمایش در tooltip
-      outages: u.coveredMs > 0 ? findOutages(day.filter((c) => c.at >= from), to).length : 0,
+      pct: u.pct,
+      checks: inDay.length,
+      avgMs: avgResponse(inDay),
+      // چند دقیقه از آن روز پایین بوده — «۹۹٫۲٪» به‌تنهایی حس مدت نمی‌دهد
+      downMs: Math.round(u.coveredMs * (1 - (u.pct ?? 100) / 100)),
+      coverPct: Math.round((u.coveredMs / (to - from)) * 100),
+      outages: outages.slice(0, 6).map(outagePayload),
     });
   }
   return bars;
@@ -58,6 +75,21 @@ function series(checks) {
   }));
 }
 
+/**
+ * یک قطعی، با هر چیزی که برای فهمیدنش لازم است: از کِی تا کِی، چند بررسی
+ * ناموفق، و دقیقاً چه کدی — با تعداد تکرار هر کد.
+ */
+function outagePayload(o) {
+  return {
+    start: new Date(o.startMs).toISOString(),
+    end: o.endMs ? new Date(o.endMs).toISOString() : null,
+    durationMs: o.durationMs,
+    ongoing: o.ongoing,
+    failedChecks: o.checks,
+    codes: o.codes.map((c) => ({ code: c.code, n: c.n })),
+  };
+}
+
 function sitePayload(site) {
   if (!isMonitored(site)) {
     return {
@@ -75,13 +107,23 @@ function sitePayload(site) {
   const status = currentStatus(all);
   const day = all.filter((c) => c.at >= NOW - DAY_MS);
 
+  // کنار هر درصد، اجزای همان محاسبه هم می‌رود تا در پنل بشود صحتش را
+  // وارسی کرد: چه مدتی پوشش داده شده، چقدرش بالا بوده، و چه مدتی اصلاً
+  // داده‌ای نبوده و از مخرج بیرون گذاشته شده.
   const uptime = {};
   const counts = {};
+  const basis = {};
   for (const w of WINDOWS) {
     const from = NOW - w.ms;
     const u = computeUptime(all.filter((c) => c.at >= from), from, NOW);
     uptime[w.key] = u.pct;
     counts[w.key] = u.count;
+    basis[w.key] = {
+      coveredMs: u.coveredMs,
+      upMs: u.upMs,
+      gapMs: u.gapMs,
+      windowMs: u.windowMs,
+    };
   }
 
   return {
@@ -97,16 +139,12 @@ function sitePayload(site) {
     lastCode: status.last ? (status.last.s || status.last.e || null) : null,
     uptime,
     counts,
+    basis,
     avgMs: avgResponse(day),
     avg7dMs: avgResponse(all.filter((c) => c.at >= NOW - 7 * DAY_MS)),
     days: dayBars(all),
     series: series(day),
-    outages: findOutages(all, NOW).slice(0, 20).map((o) => ({
-      start: new Date(o.startMs).toISOString(),
-      durationMs: o.durationMs,
-      ongoing: o.ongoing,
-      codes: o.codes.map((c) => c.code),
-    })),
+    outages: findOutages(all, NOW).slice(0, 20).map(outagePayload),
   };
 }
 

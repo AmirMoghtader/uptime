@@ -1,0 +1,66 @@
+{
+  "sites": [
+    {
+      "id": "onwebs",
+      "name": "Onwebs",
+      "url": "https://onwebs.ir"
+    },
+    {
+      "id": "avanobat",
+      "name": "Avanobat",
+      "url": "https://www.avanobat.ir"
+    },
+    {
+      "id": "bardaskan",
+      "name": "Bardaskan",
+      "url": "https://app.bardaskan.ir",
+      "monitor": false,
+      "note": "Not checked: the server returns HTTP 403 to requests from outside Iran, and GitHub runs these checks from abroad. Any result here would be a false alarm."
+    },
+    {
+      "id": "fanavaransabz",
+      "name": "Fanavaran Sabz",
+      "url": "https://fanavaransabz.com"
+    },
+    {
+      "id": "khodroid",
+      "name": "Khodroid",
+      "url": "https://khodroid.ir"
+    },
+    {
+      "id": "arvanpayam",
+      "name": "Arvan Payam",
+      "url": "https://arvanpayam.ir"
+    },
+    {
+      "id": "sarzaminvokala",
+      "name": "Sarzamin Vokala",
+      "url": "https://sarzaminvokala.ir"
+    },
+    {
+      "id": "cuatro",
+      "name": "4Cuatro",
+      "url": "https://4cuatro.ai"
+    },
+    {
+      "id": "nanomar",
+      "name": "Nanomar",
+      "url": "https://nanomar.no"
+    },
+    {
+      "id": "nanoswim",
+      "name": "Nanoswim",
+      "url": "https://nanoswim.no"
+    },
+    {
+      "id": "talkoob",
+      "name": "Talkoob",
+      "url": "https://talkoob.ir"
+    },
+    {
+      "id": "websima",
+      "name": "Websima",
+      "url": "https://websima.com"
+    }
+  ]
+}

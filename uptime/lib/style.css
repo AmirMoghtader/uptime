@@ -1,0 +1,343 @@
+/* استایل داشبورد آپتایم — موقع ساخت داخل index.html جاسازی می‌شود.
+   هیچ منبع خارجی: نه CDN، نه فونت گوگل، نه سرویس آیکون.
+   این توضیح‌ها موقع جاسازی حذف می‌شوند. */
+
+/* فونت‌ها — موقع ساخت به‌صورت base64 دقیقاً همین‌جا می‌نشینند.
+   با url() نسبی کار نمی‌کرد: مرورگر فونت را حتی از کنار خود فایل هم با
+   قواعد CORS می‌سنجد و روی file:// و data: بلاکش می‌کند. */
+/*@FONTS@*/
+
+:root {
+  /* دو رنگ برند. خاکستری‌ها از همان سرمه‌ای با شفافیت ساخته می‌شوند تا
+     صفحه یک‌دست بماند. */
+  --bg: #ffffff;
+  --ink: #133566;
+  --ink-70: rgba(19, 53, 102, 0.7);
+  --ink-52: rgba(19, 53, 102, 0.52);
+  --ink-36: rgba(19, 53, 102, 0.36);
+  --line: rgba(19, 53, 102, 0.09);
+  --hair: rgba(19, 53, 102, 0.05);
+  --shadow: 0 1px 2px rgba(19, 53, 102, 0.04), 0 14px 34px -20px rgba(19, 53, 102, 0.4);
+  --shadow-lift: 0 2px 4px rgba(19, 53, 102, 0.05), 0 26px 52px -26px rgba(19, 53, 102, 0.5);
+
+  --sans: 'Geist', 'Segoe UI', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* فقط برای وضعیت. جای دیگری رنگ اضافه نمی‌شود. */
+  --up: #12784a;
+  --down: #b93028;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* هالهٔ بسیار ملایم از رنگ برند، تا سفیدِ خشک نباشد */
+  background:
+    radial-gradient(1100px 400px at 50% -160px, rgba(19, 53, 102, 0.05), transparent 72%),
+    var(--bg);
+}
+
+body {
+  margin: 0;
+  padding: 0 24px 88px;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14.5px;
+  font-weight: 400;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1;
+}
+
+::selection { background: rgba(19, 53, 102, 0.14); }
+
+.wrap { max-width: 1060px; margin: 0 auto; }
+
+/* هرچه عدد است تک‌فاصله، با ارقام هم‌عرض و صفر خط‌دار — ستون‌ها تکان نمی‌خورند
+   و صفحه ظاهر یک ابزار اندازه‌گیری پیدا می‌کند. */
+.num, .mono {
+  font-family: var(--mono);
+  font-feature-settings: "tnum" 1, "zero" 1;
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+
+/* ── سربرگ ─────────────────────────────────────────────────────────── */
+
+header {
+  padding: 84px 0 44px;
+  text-align: center;
+  border-bottom: 1px solid var(--hair);
+  margin-bottom: 34px;
+}
+/* بچه‌های سربرگ باید هم عرض‌محدود باشند هم وسط. قاعده‌های پایین فقط
+   margin-block می‌گیرند: هر shorthandِ `margin` در آن‌ها همین auto را صفر
+   می‌کرد و متن سربرگ روی نمایشگر پهن به چپ می‌چسبید. */
+header > * { max-width: 760px; margin-inline: auto; }
+
+.eyebrow {
+  margin-block: 0 20px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--ink-36);
+}
+
+h1 {
+  margin-block: 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink-52);
+  letter-spacing: 0.1px;
+}
+
+.headline {
+  margin-block: 14px 0;
+  font-size: 33px;
+  font-weight: 300;
+  line-height: 1.35;
+  letter-spacing: -0.9px;
+}
+.headline b { font-weight: 500; }
+.headline .bad { color: var(--down); font-weight: 500; }
+
+.stamp {
+  margin-block: 20px 0;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-36);
+  letter-spacing: -0.1px;
+}
+
+/* ── کارت سایت ─────────────────────────────────────────────────────── */
+
+/* دو کارت در هر ردیف؛ زیر ۸۶۰ پیکسل تک‌ستونه می‌شود. */
+main {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  main { grid-template-columns: minmax(0, 1fr); }
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.28s ease, border-color 0.28s ease, transform 0.28s ease;
+}
+.card:hover {
+  box-shadow: var(--shadow-lift);
+  border-color: rgba(19, 53, 102, 0.15);
+  transform: translateY(-2px);
+}
+.card[open] { box-shadow: var(--shadow-lift); }
+
+.card > summary {
+  display: block;
+  padding: 24px 26px 22px;
+  cursor: pointer;
+  list-style: none;
+  border-radius: 18px;
+}
+.card > summary::-webkit-details-marker { display: none; }
+.card > summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+.head { display: flex; align-items: center; gap: 13px; }
+
+.icon {
+  width: 28px; height: 28px; flex: none;
+  border-radius: 7px;
+  object-fit: contain;
+}
+.icon-letter {
+  width: 28px; height: 28px; flex: none;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--bg);
+  display: grid; place-items: center;
+  font-size: 13px; font-weight: 500;
+}
+
+.title { min-width: 0; flex: 1; }
+.name {
+  font-size: 17px; font-weight: 500; display: block;
+  letter-spacing: -0.3px; line-height: 1.3;
+}
+.url {
+  font-family: var(--mono);
+  font-size: 11.5px; color: var(--ink-36);
+  display: block; margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  letter-spacing: -0.2px;
+}
+
+.pill {
+  flex: none;
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--mono);
+  font-size: 10.5px; font-weight: 500;
+  letter-spacing: 0.9px; text-transform: uppercase;
+  padding: 5px 11px 5px 9px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+.pill .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.pill.up {
+  color: var(--up);
+  border-color: rgba(18, 120, 74, 0.2);
+  background: rgba(18, 120, 74, 0.045);
+}
+.pill.up .dot { box-shadow: 0 0 0 3px rgba(18, 120, 74, 0.14); }
+.pill.down {
+  color: var(--down);
+  border-color: rgba(185, 48, 40, 0.22);
+  background: rgba(185, 48, 40, 0.045);
+}
+.pill.down .dot { box-shadow: 0 0 0 3px rgba(185, 48, 40, 0.14); }
+.pill.unknown { color: var(--ink-36); border-color: var(--line); }
+
+.since { font-size: 12px; color: var(--ink-52); margin: 15px 0 0; letter-spacing: -0.1px; }
+
+/* کارت سایتی که بررسی نمی‌شود: بدون عدد، بدون نمودار، فقط دلیل. */
+.card.paused { background: rgba(19, 53, 102, 0.014); box-shadow: none; }
+.card.paused:hover { transform: none; box-shadow: none; border-color: var(--line); }
+.summary-like { padding: 24px 26px 22px; }
+.paused-note { font-size: 12px; color: var(--ink-52); margin: 15px 0 0; letter-spacing: -0.1px; }
+.paused-count {
+  font-family: var(--mono);
+  font-size: 10.5px; color: var(--ink-36);
+  margin: 12px 0 0; letter-spacing: 0.6px; text-transform: uppercase;
+}
+
+/* ── نوار ۳۰ روز ───────────────────────────────────────────────────── */
+
+.strip { margin-top: 20px; }
+.strip .bars {
+  display: flex; align-items: stretch; gap: 3px;
+  height: 32px;
+}
+.strip .bars i {
+  flex: 1;
+  border-radius: 2px;
+  background: var(--up);
+  min-width: 2px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.strip .bars i:hover { transform: scaleY(1.12); }
+.strip .bars i.part { background: var(--down); }
+.strip .bars i.none { background: rgba(19, 53, 102, 0.06); }
+
+.legend {
+  display: flex; justify-content: space-between;
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 10.5px; color: var(--ink-36);
+  letter-spacing: -0.1px;
+}
+
+/* ── آمار ──────────────────────────────────────────────────────────── */
+
+/* دو ستون در هر حالت — با دو کارت در یک ردیف، چهار ستون فشرده می‌شد. */
+.stats {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  row-gap: 18px;
+}
+.stat { padding-inline: 18px; border-inline-start: 1px solid var(--hair); }
+.stat:nth-child(2n+1) { border-inline-start: 0; padding-inline-start: 0; }
+.stat:nth-child(2n) { padding-inline-end: 0; }
+.stat .k {
+  font-family: var(--mono);
+  font-size: 9.5px; color: var(--ink-36);
+  display: block; letter-spacing: 1.1px; text-transform: uppercase;
+}
+.stat .v {
+  font-size: 29px; font-weight: 300; display: block;
+  line-height: 1.35; letter-spacing: -1.2px;
+  margin-top: 3px;
+}
+.stat .v.empty { color: var(--ink-36); font-size: 17px; letter-spacing: -0.4px; }
+.stat .v small {
+  font-size: 11.5px; font-weight: 400; color: var(--ink-36);
+  margin-inline-start: 3px; letter-spacing: 0;
+}
+.stat .basis {
+  font-family: var(--mono);
+  font-size: 10px; color: var(--ink-36); display: block;
+  line-height: 1.5; letter-spacing: -0.1px; margin-top: 2px;
+}
+
+.spark { margin-top: 22px; }
+.spark svg { display: block; width: 100%; height: 54px; overflow: visible; }
+.spark .axis {
+  font-family: var(--mono);
+  font-size: 10.5px; color: var(--ink-36);
+  display: flex; justify-content: space-between; margin-top: 6px;
+  letter-spacing: -0.1px;
+}
+
+/* ── جزئیات ────────────────────────────────────────────────────────── */
+
+.detail { padding: 4px 26px 26px; border-top: 1px solid var(--hair); }
+.detail h2 {
+  font-family: var(--mono);
+  font-size: 9.5px; font-weight: 400; margin: 22px 0 10px;
+  color: var(--ink-36); letter-spacing: 1.3px; text-transform: uppercase;
+}
+
+.outages { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.outages th {
+  font-family: var(--mono);
+  text-align: start; font-weight: 400; color: var(--ink-36);
+  font-size: 9.5px; padding: 0 0 8px; border-bottom: 1px solid var(--hair);
+  letter-spacing: 1.1px; text-transform: uppercase;
+}
+.outages td { padding: 10px 0; border-bottom: 1px solid var(--hair); vertical-align: top; letter-spacing: -0.1px; }
+.outages tr:last-child td { border-bottom: 0; }
+.outages .code { color: var(--down); font-family: var(--mono); font-size: 11.5px; }
+.outages .ongoing { color: var(--down); }
+
+.none-msg { font-size: 12.5px; color: var(--ink-52); margin: 4px 0 0; }
+
+.facts { font-size: 12px; color: var(--ink-52); margin: 0; padding: 0; list-style: none; }
+.facts li { padding: 6px 0; border-bottom: 1px solid var(--hair); letter-spacing: -0.1px; }
+.facts li:last-child { border-bottom: 0; }
+.facts b { font-weight: 400; color: var(--ink); font-family: var(--mono); font-size: 11.5px; }
+
+.hint { font-size: 11px; color: var(--ink-36); margin-top: 12px; }
+
+footer {
+  margin-top: 40px; padding-top: 20px;
+  border-top: 1px solid var(--hair);
+  font-size: 11.5px; color: var(--ink-36);
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  letter-spacing: -0.1px;
+}
+footer code {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--ink-52);
+}
+
+@media (max-width: 640px) {
+  body { padding: 0 16px 60px; }
+  header { padding: 56px 0 32px; margin-bottom: 26px; }
+  .headline { font-size: 26px; letter-spacing: -0.6px; }
+  .card > summary { padding: 20px 18px 18px; }
+  .detail { padding: 4px 18px 20px; }
+  .stat .v { font-size: 25px; }
+  .strip .bars { gap: 2px; height: 28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .strip .bars i { transition: none; }
+  .card:hover { transform: none; }
+}

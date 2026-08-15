@@ -1,0 +1,9 @@
+node_modules/
+package-lock.json
+.DS_Store
+
+# صفحهٔ ساخته‌شده عمداً داخل ریپو نیست: ریپو عمومی است و داشبورد باید فقط
+# داخل پنل ادمین دیده شود. محلی با `node uptime/lib/build.mjs` ساخته می‌شود.
+uptime/index.html
+index.html
+uptime/payload.json

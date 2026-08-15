@@ -1,0 +1,35 @@
+name: Refresh icons
+
+on:
+  schedule:
+    # هفته‌ای یک بار کافی است؛ آیکون سایت‌ها هر ۵ دقیقه عوض نمی‌شود.
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: uptime-write
+  cancel-in-progress: false
+
+jobs:
+  icons:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch favicons
+        # ImageMagick روی runner از پیش نصب است و برای کوچک‌کردن آیکون‌های
+        # بزرگ‌تر از ۳۲ کیلوبایت به کار می‌رود.
+        run: node uptime/lib/icons.mjs
+
+      - name: Build dashboard
+        run: node uptime/lib/build.mjs
+
+      - name: Commit
+        run: 'bash uptime/lib/commit.sh "chore(uptime): refresh icons"'

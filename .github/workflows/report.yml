@@ -1,0 +1,40 @@
+name: Weekly report
+
+on:
+  schedule:
+    # شنبه‌ها ۷:۳۰ صبح تهران — گزارش هفتهٔ گذشته.
+    - cron: "0 4 * * 6"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: uptime-write
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    # سکرت را اینجا به env می‌دهیم؛ context مربوط به secrets در شرط `if`
+    # قابل استفاده نیست، ولی env هست.
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # اختیاری: اگر سکرت ANTHROPIC_API_KEY تعریف شده باشد، متن گزارش با
+      # Claude بازنویسی می‌شود. بدون آن هم گزارش کامل نوشته می‌شود.
+      - name: Install Claude SDK (only when a key is set)
+        if: env.ANTHROPIC_API_KEY != ''
+        run: npm install --no-save @anthropic-ai/sdk
+
+      - name: Write report
+        run: node uptime/lib/report.mjs
+
+      - name: Commit
+        run: 'bash uptime/lib/commit.sh "chore(uptime): weekly report"'

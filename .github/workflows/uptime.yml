@@ -1,0 +1,51 @@
+name: Uptime check
+
+on:
+  schedule:
+    # هر ۱۰ دقیقه. روی ریپوی عمومی، Actions با runnerهای استاندارد رایگان است
+    # و سقف دقیقه ندارد (مستند رسمی: «GitHub Actions usage is free for standard
+    # GitHub-hosted runners in public repositories»). پس این عدد فقط به دقتِ
+    # رصد مربوط است، نه به هزینه.
+    #
+    # اگر عوضش کردید، CHECK_EVERY_MIN در uptime/lib/common.mjs را هم با همان
+    # عدد هماهنگ کنید — محاسبهٔ «شکاف داده» به آن وابسته است.
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# دو اجرا هم‌زمان روی یک فایل داده کامیت نکنند.
+concurrency:
+  group: uptime-write
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      # مرجعِ فهرست سایت‌ها پنل ادمین است؛ اینجا فقط خوانده می‌شود.
+      UPTIME_SITES_ENDPOINT: ${{ vars.UPTIME_SITES_ENDPOINT }}
+      UPTIME_ENDPOINT: ${{ vars.UPTIME_ENDPOINT }}
+      UPTIME_TOKEN: ${{ secrets.UPTIME_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # تاریخچهٔ کامل لازم است: کامیت روزانه با --amend نوشته می‌شود.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Sync the site list from the panel
+        run: node uptime/lib/sync-sites.mjs
+
+      - name: Run checks
+        run: node uptime/lib/check.mjs
+
+      - name: Build the payload and push it to the panel
+        run: node uptime/lib/payload.mjs
+
+      - name: Commit results
+        run: 'bash uptime/lib/commit.sh "chore(uptime): daily log" --amend-daily'

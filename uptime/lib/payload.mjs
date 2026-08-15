@@ -20,6 +20,22 @@ import {
 const NOW = Date.now();
 const STRIP_DAYS = 30;
 
+// مرز روز به وقت تهران (UTC+3:30، بدون ساعت تابستانی از ۲۰۲۲).
+//
+// تا حالا «روز» یعنی ۲۴ ساعتِ قبل از همین لحظه بود، ولی برچسبش یک تاریخ
+// تقویمی را نشان می‌داد — یعنی میله‌ای که «۲۳ مرداد» می‌گفت در واقع از ساعت
+// ۲۱ روز قبل تا ۲۱ آن روز بود. برای ذخیره در دیتابیس این اشتباه جدی‌تر هم
+// می‌شد، چون کلید جدول تاریخ است. حالا مرزها واقعاً نیمه‌شب تهران‌اند.
+const TEHRAN_OFFSET_MS = 3.5 * 60 * 60 * 1000;
+
+function tehranDayStart(ms) {
+  return Math.floor((ms + TEHRAN_OFFSET_MS) / DAY_MS) * DAY_MS - TEHRAN_OFFSET_MS;
+}
+
+function tehranDayKey(ms) {
+  return new Date(ms + TEHRAN_OFFSET_MS).toISOString().slice(0, 10);
+}
+
 const sites = readSites();
 const icons = readIcons();
 
@@ -30,29 +46,34 @@ const icons = readIcons();
  * بشود دید آن روز دقیقاً چه گذشته — بدون اینکه پنل لازم باشد چیزی حساب کند.
  */
 function dayBars(checks) {
+  const today = tehranDayStart(NOW);
   const bars = [];
+
   for (let i = STRIP_DAYS - 1; i >= 0; i--) {
-    const to = Math.min(NOW, NOW - i * DAY_MS);
-    const from = to - DAY_MS;
+    const from = today - i * DAY_MS;
+    const to = Math.min(NOW, from + DAY_MS);
     const window = checks.filter((c) => c.at >= from - DAY_MS && c.at <= to);
     const inDay = window.filter((c) => c.at >= from && c.at <= to);
     const u = computeUptime(window, from, to);
+    const date = tehranDayKey(from);
 
     if (!(u.coveredMs > 0)) {
-      bars.push({ date: new Date(to).toISOString().slice(0, 10), pct: null, checks: 0 });
+      bars.push({ date, pct: null, checks: 0, coveredMs: 0, upMs: 0, gapMs: u.gapMs, outages: [] });
       continue;
     }
 
-    const outages = findOutages(inDay, to);
     bars.push({
-      date: new Date(to).toISOString().slice(0, 10),
+      date,
       pct: u.pct,
       checks: inDay.length,
       avgMs: avgResponse(inDay),
+      coveredMs: u.coveredMs,
+      upMs: u.upMs,
+      gapMs: u.gapMs,
       // چند دقیقه از آن روز پایین بوده — «۹۹٫۲٪» به‌تنهایی حس مدت نمی‌دهد
-      downMs: Math.round(u.coveredMs * (1 - (u.pct ?? 100) / 100)),
+      downMs: u.coveredMs - u.upMs,
       coverPct: Math.round((u.coveredMs / (to - from)) * 100),
-      outages: outages.slice(0, 6).map(outagePayload),
+      outages: findOutages(inDay, to).slice(0, 6).map(outagePayload),
     });
   }
   return bars;
@@ -148,11 +169,29 @@ function sitePayload(site) {
   };
 }
 
+/**
+ * بررسی‌های همین اجرا — خام، برای ثبت در دیتابیس.
+ *
+ * فقط نتیجهٔ همین اجرا فرستاده می‌شود، نه کل تاریخچه؛ کلید یکتای جدول
+ * (site_id, checked_at) هم باعث می‌شود ارسال دوباره چیزی را دو بار ثبت نکند.
+ */
+function currentRun() {
+  const since = NOW - 3 * CHECK_EVERY_MIN * 60 * 1000;
+  const rows = [];
+  for (const site of sites.filter(isMonitored)) {
+    for (const c of loadChecks(site.id, since, NOW)) {
+      rows.push({ id: site.id, t: c.t, s: c.s, ms: c.ms, ...(c.e ? { e: c.e } : {}) });
+    }
+  }
+  return rows;
+}
+
 const payload = {
   generatedAt: new Date(NOW).toISOString(),
   checkEveryMin: CHECK_EVERY_MIN,
   maxGapMin: MAX_GAP_MS / 60000,
   sites: sites.map(sitePayload),
+  run: currentRun(),
 };
 
 const out = join(UPTIME_DIR, 'payload.json');

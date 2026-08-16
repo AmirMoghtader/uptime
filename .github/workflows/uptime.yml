@@ -2,20 +2,21 @@ name: Uptime check
 
 on:
   schedule:
-    # هر ۱۰ دقیقه. روی ریپوی عمومی، Actions با runnerهای استاندارد رایگان است
-    # و سقف دقیقه ندارد (مستند رسمی: «GitHub Actions usage is free for standard
-    # GitHub-hosted runners in public repositories»). پس این عدد فقط به دقتِ
-    # رصد مربوط است، نه به هزینه.
+    # هر ۱۵ دقیقه فقط «شروع‌کننده» است، نه فاصلهٔ واقعی بررسی.
     #
-    # اگر عوضش کردید، CHECK_EVERY_MIN در uptime/lib/common.mjs را هم با همان
-    # عدد هماهنگ کنید — محاسبهٔ «شکاف داده» به آن وابسته است.
-    - cron: "*/10 * * * *"
+    # cron گیت‌هاب تضمین‌شده نیست و زیر بار تأخیر می‌گیرد؛ در عمل دیده شد که
+    # با */10 در هفت ساعت فقط ۱۱ بار اجرا شد، با فاصله‌های ۳۰ تا ۷۰ دقیقه.
+    # پس به‌جای تکیه بر cron، هر اجرا خودش چند بار پشت سر هم بررسی می‌کند
+    # (پایین، CHECKS و GAP_SECONDS). این‌طور حتی اگر cron دیر بیاید، پوشش
+    # همان اجرا حفظ می‌شود.
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
 
-# دو اجرا هم‌زمان روی یک فایل داده کامیت نکنند.
+# دو اجرا هم‌زمان روی یک فایل داده کامیت نکنند. اجرای تازه در صف می‌ماند تا
+# اجرای جاری تمام شود.
 concurrency:
   group: uptime-write
   cancel-in-progress: false
@@ -28,6 +29,9 @@ jobs:
       UPTIME_SITES_ENDPOINT: ${{ vars.UPTIME_SITES_ENDPOINT }}
       UPTIME_ENDPOINT: ${{ vars.UPTIME_ENDPOINT }}
       UPTIME_TOKEN: ${{ secrets.UPTIME_TOKEN }}
+      # پنج بررسی با فاصلهٔ سه دقیقه ≈ ۱۲ دقیقه پوشش در هر اجرا.
+      CHECKS: "5"
+      GAP_SECONDS: "180"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,18 +46,28 @@ jobs:
         id: sync
         run: node uptime/lib/sync-sites.mjs
 
-      - name: Run checks
-        run: node uptime/lib/check.mjs
-
-      # فقط وقتی فهرست عوض شده باشد — یعنی همان لحظه‌ای که سایتی از پنل
-      # اضافه شده. آیکون و لوگو تغییر نمی‌کنند، پس گرفتن دوباره‌شان در هر
-      # اجرا کار بیهوده‌ای است؛ تازه‌سازی کامل ماهی یک بار جدا انجام می‌شود.
+      # فقط وقتی فهرست عوض شده باشد — یعنی همان لحظه‌ای که سایتی از پنل اضافه
+      # شده. آیکون و لوگو تغییر نمی‌کنند، پس گرفتن دوباره‌شان در هر اجرا کار
+      # بیهوده‌ای است؛ تازه‌سازی کامل ماهی یک بار جدا انجام می‌شود.
       - name: Fetch icons for new sites
         if: steps.sync.outputs.changed == 'true'
         run: node uptime/lib/icons.mjs --missing
 
-      - name: Build the payload and push it to the panel
-        run: node uptime/lib/payload.mjs
+      # هر دور: بررسی، بعد ارسال فوری به پنل. ارسال داخل حلقه است تا پنل هر سه
+      # دقیقه تازه شود، نه یک بار در پایان اجرا.
+      #
+      # خطای یک دور، بقیه را نمی‌خواباند: داده‌ی دورهای موفق باید ثبت شود.
+      - name: Run checks
+        run: |
+          set +e
+          for i in $(seq 1 "$CHECKS"); do
+            echo "── round $i of $CHECKS ──"
+            node uptime/lib/check.mjs   || echo "round $i: check failed"
+            node uptime/lib/payload.mjs || echo "round $i: payload failed"
+            if [ "$i" -lt "$CHECKS" ]; then sleep "$GAP_SECONDS"; fi
+          done
+          exit 0
 
+      # یک کامیت برای کل اجرا، نه یکی برای هر دور.
       - name: Commit results
         run: 'bash uptime/lib/commit.sh "chore(uptime): daily log" --amend-daily'

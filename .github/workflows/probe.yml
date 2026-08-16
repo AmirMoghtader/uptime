@@ -1,0 +1,68 @@
+name: Probe a URL
+
+# ابزار تشخیص دستی: یک آدرس را از همان جایی می‌زند که بررسی‌ها انجام می‌شود.
+#
+# هر بار که سایتی از ایران سالم است ولی رصد پایین نشانش می‌دهد (یا برعکس)،
+# سؤال یکی است: مشکل از خود سایت است یا از مسیر شبکه؟ این Workflow جواب را
+# از دید runner می‌دهد، بدون اینکه چیزی در تاریخچه ثبت شود.
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "آدرس کامل، مثل https://app.bardaskan.ir"
+        required: true
+        type: string
+      times:
+        description: "چند بار پشت سر هم"
+        required: false
+        default: "3"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Probe
+        env:
+          TARGET: ${{ inputs.url }}
+          TIMES: ${{ inputs.times }}
+        run: |
+          node -e '
+            const url = process.env.TARGET;
+            const times = Math.min(10, Math.max(1, Number(process.env.TIMES) || 3));
+            const UA = "OnwebsUptimeBot/1.0 (+https://github.com/onwebs/uptime)";
+
+            console.log(`Probing ${url} from a GitHub runner, ${times} time(s).\n`);
+            for (let i = 1; i <= times; i++) {
+              const started = Date.now();
+              const controller = new AbortController();
+              const timer = setTimeout(() => controller.abort(), 15000);
+              try {
+                const res = await fetch(url, {
+                  redirect: "follow",
+                  signal: controller.signal,
+                  headers: { "user-agent": UA, accept: "text/html,*/*" },
+                });
+                const ms = Date.now() - started;
+                const server = res.headers.get("server") ?? "-";
+                console.log(`#${i}  HTTP ${res.status}  ${ms} ms  final=${res.url}  server=${server}`);
+                // چند بایت اول بدنه معمولاً می‌گوید خطا از خود اپ است یا از لایه‌ی بالاتر
+                if (!res.ok) {
+                  const text = (await res.text()).replace(/\s+/g, " ").slice(0, 200);
+                  console.log(`     body: ${text}`);
+                } else {
+                  res.body?.cancel().catch(() => {});
+                }
+              } catch (err) {
+                console.log(`#${i}  FAILED after ${Date.now() - started} ms — ${err?.message ?? err}`);
+              } finally {
+                clearTimeout(timer);
+              }
+              if (i < times) await new Promise((r) => setTimeout(r, 3000));
+            }
+          '

@@ -23,12 +23,7 @@
       {"t":"2026-08-22T03:59:29Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:04:21Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:09:25Z","s":0,"ms":10495,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:25:46Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:30:40Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:35:34Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:40:34Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:45:30Z","s":0,"ms":10483,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "avanobat": [
       {"t":"2026-08-22T00:01:09Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -52,12 +47,7 @@
       {"t":"2026-08-22T03:59:29Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:04:21Z","s":0,"ms":10495,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:09:25Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10496,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:25:46Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:30:40Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:35:34Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:40:34Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:45:30Z","s":0,"ms":10495,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10496,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "fanavaransabz": [
       {"t":"2026-08-22T00:01:09Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -81,12 +71,7 @@
       {"t":"2026-08-22T03:59:29Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:04:21Z","s":0,"ms":10495,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:09:25Z","s":0,"ms":10495,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10496,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:25:46Z","s":200,"ms":9260},
-      {"t":"2026-08-22T04:30:40Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:35:34Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:40:34Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:45:30Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10496,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "khodroid": [
       {"t":"2026-08-22T00:01:09Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -110,12 +95,7 @@
       {"t":"2026-08-22T03:59:29Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:04:21Z","s":0,"ms":10495,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:09:25Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10496,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:25:46Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:30:40Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:35:34Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:40:34Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:45:30Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10496,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "arvanpayam": [
       {"t":"2026-08-22T00:01:09Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -139,12 +119,7 @@
       {"t":"2026-08-22T03:59:29Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:04:21Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:09:25Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10495,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:25:46Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:30:40Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:35:34Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:40:34Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:45:30Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10495,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "sarzaminvokala": [
       {"t":"2026-08-22T00:01:09Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -168,12 +143,7 @@
       {"t":"2026-08-22T03:59:29Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:04:21Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:09:25Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:25:46Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:30:40Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:35:34Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:40:34Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:45:30Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "cuatro": [
       {"t":"2026-08-22T00:01:09Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -197,12 +167,7 @@
       {"t":"2026-08-22T03:59:29Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:04:21Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:09:25Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:25:46Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:30:40Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:35:34Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:40:34Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:45:30Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "nanomar": [
       {"t":"2026-08-22T00:01:09Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -226,12 +191,7 @@
       {"t":"2026-08-22T03:59:29Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:04:21Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:09:25Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:25:46Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:30:40Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:35:34Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:40:34Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:45:30Z","s":0,"ms":10486,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "nanoswim": [
       {"t":"2026-08-22T00:01:09Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -255,12 +215,7 @@
       {"t":"2026-08-22T03:59:29Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:04:21Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:09:25Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:25:46Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:30:40Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:35:34Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:40:34Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:45:30Z","s":0,"ms":10485,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "talkoob": [
       {"t":"2026-08-22T00:01:09Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -284,12 +239,7 @@
       {"t":"2026-08-22T03:59:29Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:04:21Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:09:25Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:25:46Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:30:40Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:35:34Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:40:34Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:45:30Z","s":0,"ms":10484,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "websima": [
       {"t":"2026-08-22T00:01:09Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -313,12 +263,7 @@
       {"t":"2026-08-22T03:59:29Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:04:21Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-22T04:09:25Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:25:46Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:30:40Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:35:34Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:40:34Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-22T04:45:30Z","s":0,"ms":10483,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-22T04:14:29Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ]
   }
 }

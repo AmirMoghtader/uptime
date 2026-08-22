@@ -176,7 +176,10 @@
       {"t":"2026-08-21T23:22:08Z","s":0,"ms":10487,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:27:20Z","s":0,"ms":10495,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:32:28Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:46:37Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:51:02Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:56:12Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "avanobat": [
       {"t":"2026-08-21T00:00:14Z","s":0,"ms":10487,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -353,7 +356,10 @@
       {"t":"2026-08-21T23:22:08Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:27:20Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:32:28Z","s":0,"ms":10486,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10487,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10487,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:46:37Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:51:02Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:56:12Z","s":0,"ms":10495,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "fanavaransabz": [
       {"t":"2026-08-21T00:00:14Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -530,7 +536,10 @@
       {"t":"2026-08-21T23:22:08Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:27:20Z","s":0,"ms":10495,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:32:28Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:46:37Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:51:02Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:56:12Z","s":0,"ms":10495,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "khodroid": [
       {"t":"2026-08-21T00:00:14Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -707,7 +716,10 @@
       {"t":"2026-08-21T23:22:08Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:27:20Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:32:28Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:46:37Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:51:02Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:56:12Z","s":0,"ms":10494,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "arvanpayam": [
       {"t":"2026-08-21T00:00:14Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -884,7 +896,10 @@
       {"t":"2026-08-21T23:22:08Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:27:20Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:32:28Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:46:37Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:51:02Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:56:12Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "sarzaminvokala": [
       {"t":"2026-08-21T00:00:14Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -1061,7 +1076,10 @@
       {"t":"2026-08-21T23:22:08Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:27:20Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:32:28Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:46:37Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:51:02Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:56:12Z","s":0,"ms":10493,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "cuatro": [
       {"t":"2026-08-21T00:00:14Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -1238,7 +1256,10 @@
       {"t":"2026-08-21T23:22:08Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:27:20Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:32:28Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:46:37Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:51:02Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:56:12Z","s":0,"ms":10492,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "nanomar": [
       {"t":"2026-08-21T00:00:14Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -1415,7 +1436,10 @@
       {"t":"2026-08-21T23:22:08Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:27:20Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:32:28Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:46:37Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:51:02Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:56:12Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "nanoswim": [
       {"t":"2026-08-21T00:00:14Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -1592,7 +1616,10 @@
       {"t":"2026-08-21T23:22:08Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:27:20Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:32:28Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:46:37Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:51:02Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:56:12Z","s":0,"ms":10491,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "talkoob": [
       {"t":"2026-08-21T00:00:14Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -1769,7 +1796,10 @@
       {"t":"2026-08-21T23:22:08Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:27:20Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:32:28Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:46:37Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:51:02Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:56:12Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ],
     "websima": [
       {"t":"2026-08-21T00:00:14Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"},
@@ -1946,7 +1976,10 @@
       {"t":"2026-08-21T23:22:08Z","s":0,"ms":10487,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:27:20Z","s":0,"ms":10488,"e":"UND_ERR_CONNECT_TIMEOUT"},
       {"t":"2026-08-21T23:32:28Z","s":0,"ms":10487,"e":"UND_ERR_CONNECT_TIMEOUT"},
-      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10487,"e":"UND_ERR_CONNECT_TIMEOUT"}
+      {"t":"2026-08-21T23:37:35Z","s":0,"ms":10487,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:46:37Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:51:02Z","s":0,"ms":10489,"e":"UND_ERR_CONNECT_TIMEOUT"},
+      {"t":"2026-08-21T23:56:12Z","s":0,"ms":10490,"e":"UND_ERR_CONNECT_TIMEOUT"}
     ]
   }
 }
